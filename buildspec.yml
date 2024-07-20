@@ -12,3 +12,5 @@ phases:
       - echo 'Test stage'
       - test -f build/index.html || (echo "index.html not found" && exit 1)
       - npm test
+timeouts:
+  build: 2
