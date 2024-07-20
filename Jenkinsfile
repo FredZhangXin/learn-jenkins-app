@@ -6,16 +6,25 @@ pipeline {
         }
     }
     stages {
+        stage('Setup') {
+            steps {
+                sh 'node --version'
+                sh 'npm --version'
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm ci'
+            }
+        }
         stage('Build') {
             steps {
-                sh '''
-                    ls -la
-                    node --version
-                    npm --version
-                    npm ci
-                    npm run build
-                    ls -la
-                '''
+                sh 'npm run build'
+            }
+        }
+        stage('List Files') {
+            steps {
+                sh 'ls -la'
             }
         }
     }
