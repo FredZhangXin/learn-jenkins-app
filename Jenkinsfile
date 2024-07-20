@@ -20,7 +20,7 @@ pipeline {
             steps {
                 echo 'Test stage'
                 sh 'test -f build/index.html || (echo "index.html not found" && exit 1)'
-                npm test
+                sh 'npm test'
             }
         }
     }
