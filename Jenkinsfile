@@ -61,9 +61,7 @@ pipeline {
             agent {
                 docker any
             }
-            steps {
-                junit 'jest-results/junit.xml'
-            }
+            junit 'jest-results/junit.xml'
         }
     }
 }
