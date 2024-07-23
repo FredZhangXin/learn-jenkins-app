@@ -1,11 +1,7 @@
 pipeline {
+    agent any
     stages {
-        agent {
-            docker {
-                image 'node:18-alpine'
-                args '-u root'
-            }
-        }
+        /*
         stage('Install Dependencies') {
             steps {
                 sh 'npm ci'
@@ -16,7 +12,14 @@ pipeline {
                 sh 'npm run build'
             }
         }
+        */
         stage('Test') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    // args '-u root'
+                }
+            }
             steps {
                 echo 'Test stage'
                 sh 'test -f build/index.html || (echo "index.html not found" && exit 1)'
@@ -26,7 +29,7 @@ pipeline {
         stage('E2E') {
             agent {
                 docker {
-                    image 'mcr.microsoft.com/playwright:v1.40.0-jammy'
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                     reuseNode true
                 }
             }
