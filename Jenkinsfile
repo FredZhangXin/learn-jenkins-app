@@ -1,35 +1,22 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:18-alpine'
+            args '-u root'
+        }
+    }
     stages {
         stage('Install Dependencies') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    // args '-u root'
-                }
-            }
             steps {
                 sh 'npm ci'
             }
         }
         stage('Build') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    // args '-u root'
-                }
-            }
             steps {
                 sh 'npm run build'
             }
         }
         stage('Test') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    // args '-u root'
-                }
-            }
             steps {
                 echo 'Test stage'
                 sh 'test -f build/index.html || (echo "index.html not found" && exit 1)'
