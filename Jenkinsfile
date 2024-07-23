@@ -58,12 +58,12 @@ pipeline {
     }
    post {
         always {
-            node {
+           
                 agent any
                 steps {
                     junit 'jest-results/junit.xml'
                 }
-            }
+       
         }
     }
 }
