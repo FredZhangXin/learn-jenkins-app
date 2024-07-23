@@ -23,6 +23,13 @@ pipeline {
                 sh 'npm test'
             }
         }
+        // stage('E2E') {
+        //     steps {
+        //         echo 'Test stage'
+        //         sh 'test -f build/index.html || (echo "index.html not found" && exit 1)'
+        //         sh 'npm test'
+        //     }
+        // }
     }
     post {
         always {
