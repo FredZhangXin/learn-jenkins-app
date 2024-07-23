@@ -58,10 +58,12 @@ pipeline {
     }
    post {
         always {
-            agent {
-                docker any
+            node {
+                agent any
+                steps {
+                    junit 'jest-results/junit.xml'
+                }
             }
-            junit 'jest-results/junit.xml'
         }
     }
 }
