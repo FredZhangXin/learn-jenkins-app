@@ -24,35 +24,39 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stage('Test') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    args '-u root'
-                    reuseNode true
+        stage('Run Tests') {
+            parallel {
+                stage('Test') {
+                    agent {
+                        docker {
+                            image 'node:18-alpine'
+                            args '-u root'
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        echo 'Test stage'
+                        sh 'test -f build/index.html || (echo "index.html not found" && exit 1)'
+                        sh 'npm test'
+                    }
                 }
-            }
-            steps {
-                echo 'Test stage'
-                sh 'test -f build/index.html || (echo "index.html not found" && exit 1)'
-                sh 'npm test'
-            }
-        }
-        stage('E2E') {
-            agent {
-                docker {
-                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-                    args '-u root'
-                    reuseNode true
+                stage('E2E') {
+                    agent {
+                        docker {
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            args '-u root'
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        sh '''
+                            npm install -g serve
+                            serve -s build & 
+                            sleep 10
+                            npx playwright test --reporter=html
+                        '''
+                    }
                 }
-            }
-            steps {
-                sh '''
-                    npm install -g serve
-                    serve -s build & 
-                    sleep 10
-                    npx playwright test --reporter=html
-                '''
             }
         }
     }
