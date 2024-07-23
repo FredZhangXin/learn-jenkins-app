@@ -56,10 +56,13 @@ pipeline {
             }
         }
     }
-    post {
+   post {
         always {
+            agent {
+                docker any
+            }
             steps {
-                unit 'jest-results/junit.xml'
+                junit 'jest-results/junit.xml'
             }
         }
     }
