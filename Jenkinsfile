@@ -1,18 +1,28 @@
 pipeline {
     agent any
     stages {
-        /*
         stage('Install Dependencies') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    // args '-u root'
+                }
+            }
             steps {
                 sh 'npm ci'
             }
         }
         stage('Build') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    // args '-u root'
+                }
+            }
             steps {
                 sh 'npm run build'
             }
         }
-        */
         stage('Test') {
             agent {
                 docker {
@@ -36,7 +46,8 @@ pipeline {
             steps {
                 sh '''
                     npm install serve
-                    serve -s build
+                    node_modules/.bin/serve -s build & 
+                    sleep 10
                     npx playwright test
                 '''
             }
