@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
     stages {
         stage('Install Dependencies') {
             agent {
@@ -58,12 +58,9 @@ pipeline {
     }
    post {
         always {
-           
-                agent any
-                steps {
-                    junit 'jest-results/junit.xml'
-                }
-       
+            steps {
+                junit 'jest-results/junit.xml'
+            }
         }
     }
 }
